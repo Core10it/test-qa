@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package EngineersPathsMicGrpc;
+
+option go_package = "engineersPathsMic.engineersPathsMicGrpc;engineersPathsMicGrpc";
+
+service EngineersPathsMicGrpc{
+	rpc GetWorkDayLast (UserIdRequest) returns (WorkDay);
+	rpc GetWorkDayCurrent (UserIdRequest) returns (CurrentWorkDayResponse);
+	rpc StartWorkDay (StartWorkDayRequest) returns (CurrentWorkDayResponse);
+	rpc FinishWorkDay (FinishWorkDayRequest) returns (WorkDay);
+	rpc GetWorkDayAddresses (GetWorkDayAddressesRequest) returns (WorkDayAddresses);
+	rpc DeleteWorkDayAddress (DeleteWorkDayAddressRequest) returns (EmptyRequest);
+}
+
+message UserIdRequest{
+	uint32 user_id = 1;
+}
+
+message GetWorkDayAddressesRequest{
+	uint32 user_id = 1;
+	bool show_hidden = 2;
+}
+
+message EmptyRequest {}
+
+message WorkDayAddress{
+	uint32 id = 1;
+	string name = 2;
+	string coords = 3;
+	bool is_active = 4;
+}
+
+message WorkDayLastResponse{
+	bool by_car = 1;
+	WorkDayAddress last_address = 2;
+}
+
+message DeleteWorkDayAddressRequest{
+	uint32 id = 1;
+}
+
+message WorkDayAddresses{
+	repeated WorkDayAddress addresses = 1;
+}
+
+message WorkDay{
+	uint32 id = 1;
+	bool by_car = 2;
+	ShortWorkDayAddress start_point = 3;
+	ShortWorkDayAddress finish_point = 4;
+	string start_date = 5;
+	string finish_date = 6;
+}
+
+message GetWorkDayAddresses{
+	bool show_hidden = 1;
+	uint32 user_id = 2;
+}
+
+message StartWorkDayRequest{
+	uint32 user_id = 1;
+	bool by_car = 2;
+	uint32 work_address_id = 3;
+}
+
+message ActInfo{
+	string name = 1;
+	string coords = 2;
+}
+
+message FinishWorkDayRequest{
+	uint32 user_id = 1;
+	bool by_car = 2;
+	uint32 work_address_id = 3;
+	string finish_date = 4;
+	repeated ActInfo acts = 5;
+}
+
+message ShortWorkDayAddress{
+	uint32 id = 1;
+	string name = 2;
+}
+
+message CurrentWorkDayResponse{
+	uint32 id = 1;
+	bool by_car = 2;
+	string start_date = 3;
+	ShortWorkDayAddress start_point = 4;
+}
